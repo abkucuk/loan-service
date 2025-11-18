@@ -1,5 +1,8 @@
 package com.bankcase.loan_service.application.port;
 
+import java.math.BigDecimal;
+
 public interface CustomerCreditCheckPort {
 
-    boolean isCustomerEligible(Long customerId);}
+    Boolean hasEnoughLimit(Long customerId, BigDecimal amount);
+}
