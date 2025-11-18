@@ -1,5 +1,6 @@
 package com.bankcase.loan_service.infra.repository;
 
+import com.bankcase.loan_service.domain.model.LoanInstallment;
 import com.bankcase.loan_service.domain.model.enums.LoanStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "loans")
@@ -22,33 +25,48 @@ public class LoanEntity {
 
     private BigDecimal loanAmount;
 
-    private BigDecimal remainingAmount;
-
     private BigDecimal interestRate;
 
-    private int termInMonths;
+    private Integer numberOfInstallment;
 
     @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
     private LocalDateTime createdAt;
 
-    public LoanEntity(Long id,
-                      Long customerId,
+    @OneToMany(
+            mappedBy = "loanEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<LoanInstallmentEntity> installmentList;
+
+    public LoanEntity(Long customerId,
                       BigDecimal loanAmount,
-                      BigDecimal remainingAmount,
                       BigDecimal interestRate,
-                      int termInMonths,
+                      Integer numberOfInstallment,
                       LoanStatus status,
                       LocalDateTime createdAt) {
 
-        this.id = id;
         this.customerId = customerId;
         this.loanAmount = loanAmount;
-        this.remainingAmount = remainingAmount;
         this.interestRate = interestRate;
-        this.termInMonths = termInMonths;
+        this.numberOfInstallment = numberOfInstallment;
         this.status = status;
         this.createdAt = createdAt;
+    }
+
+    public void addInstallment(LoanInstallmentEntity installment){
+        if (this.installmentList == null) {
+            this.installmentList = new ArrayList<>();
+        }
+        this.installmentList.add(installment);
+        installment.setLoanEntity(this);
+    }
+
+    public void removeInstallment(LoanInstallmentEntity installment){
+        this.installmentList.remove(installment);
+        installment.setLoanEntity(null);
     }
 }
