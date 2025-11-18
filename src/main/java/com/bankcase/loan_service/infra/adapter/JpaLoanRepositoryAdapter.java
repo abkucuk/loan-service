@@ -37,6 +37,7 @@ public class JpaLoanRepositoryAdapter implements LoanRepositoryPort {
     @Override
     public List<Loan> findByCustomerId(Long customerId) {
         return repository.findByCustomerId(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer has no loan"))
                 .stream()
                 .map(this::toDomain)
                 .toList();

@@ -8,9 +8,11 @@ import com.bankcase.loan_service.domain.model.InterestRate;
 import com.bankcase.loan_service.domain.model.Loan;
 import com.bankcase.loan_service.domain.model.Money;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +69,10 @@ public class LoanApplicationService {
         // TODO: Implement payment application logic
         //loan.applyPayment(payment);
         return loanRepositoryPort.save(loan);
+    }
+
+    public ResponseEntity<List<Loan>> findByCustomerId(Long customerId) {
+        List<Loan> loans = loanRepositoryPort.findByCustomerId(customerId);
+        return ResponseEntity.ok(loans);
     }
 }
