@@ -3,13 +3,14 @@ package com.bankcase.loan_service.application;
 import com.bankcase.loan_service.application.dto.CreateLoanRequest;
 import com.bankcase.loan_service.application.port.CustomerCreditCheckPort;
 import com.bankcase.loan_service.application.port.LoanRepositoryPort;
+import com.bankcase.loan_service.domain.model.NumberOfInstallment;
+import com.bankcase.loan_service.domain.model.InterestRate;
 import com.bankcase.loan_service.domain.model.Loan;
-import com.bankcase.loan_service.domain.model.enums.LoanStatus;
+import com.bankcase.loan_service.domain.model.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -21,22 +22,22 @@ public class LoanApplicationService {
     public Loan createLoan(CreateLoanRequest request) {
 
         Long customerId = request.customerId();
-        BigDecimal amount = request.amount();
-        BigDecimal interestRate = request.interestRate();
-        int term = 12; // default term in months; add to CreateLoanRequest if needed
+        Money amount = Money.of(request.amount());
+        InterestRate interestRate = InterestRate.of(request.interestRate());
+        NumberOfInstallment numberOfInstallment = NumberOfInstallment.of(request.installments());
 
-        if (!customerCreditCheckPort.isCustomerEligible(customerId)) {
-            throw new IllegalStateException("Customer is not eligible for loan.");
+        Boolean hasEnoughLimit = customerCreditCheckPort.hasEnoughLimit(customerId, amount.getValue());
+
+        if (!hasEnoughLimit) {
+            throw new IllegalStateException("Insufficient credit available for customer ID: " + customerId);
         }
 
-        Loan loan = new Loan(
+        Loan loan = Loan.create(
                 null,
                 customerId,
                 amount,
                 interestRate,
-                term,
-                LoanStatus.PENDING,
-                LocalDateTime.now()
+                numberOfInstallment
         );
 
         return loanRepositoryPort.save(loan);
@@ -50,6 +51,7 @@ public class LoanApplicationService {
         return loanRepositoryPort.save(loan);
     }
 
+
     public Loan rejectLoan(Long id) {
         Loan loan = loanRepositoryPort.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Loan not found"));
@@ -62,7 +64,8 @@ public class LoanApplicationService {
         Loan loan = loanRepositoryPort.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Loan not found"));
 
-        loan.applyPayment(payment);
+        // TODO: Implement payment application logic
+        //loan.applyPayment(payment);
         return loanRepositoryPort.save(loan);
     }
 }
