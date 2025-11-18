@@ -1,7 +1,11 @@
 package com.bankcase.loan_service.infra.adapter;
 
 import com.bankcase.loan_service.application.port.LoanRepositoryPort;
+import com.bankcase.loan_service.domain.model.InterestRate;
 import com.bankcase.loan_service.domain.model.Loan;
+import com.bankcase.loan_service.domain.model.Money;
+import com.bankcase.loan_service.domain.model.NumberOfInstallment;
+import com.bankcase.loan_service.infra.mapper.LoanEntityMapper;
 import com.bankcase.loan_service.infra.repository.LoanEntity;
 import com.bankcase.loan_service.infra.repository.LoanJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +19,11 @@ import java.util.Optional;
 public class JpaLoanRepositoryAdapter implements LoanRepositoryPort {
 
     private final LoanJpaRepository repository;
+    private final LoanEntityMapper mapper;
 
     @Override
     public Loan save(Loan loan) {
-        LoanEntity entity = new LoanEntity(
-                loan.getId(),
-                loan.getCustomerId(),
-                loan.getLoanAmount(),
-                loan.getRemainingAmount(),
-                loan.getInterestRate(),
-                loan.getTermInMonths(),
-                loan.getStatus(),
-                loan.getCreatedAt()
-        );
-
+        LoanEntity entity = mapper.toEntity(loan);
         LoanEntity saved = repository.save(entity);
 
         return toDomain(saved);
@@ -48,14 +43,12 @@ public class JpaLoanRepositoryAdapter implements LoanRepositoryPort {
     }
 
     private Loan toDomain(LoanEntity entity) {
-        return new Loan(
+        return Loan.create(
                 entity.getId(),
                 entity.getCustomerId(),
-                entity.getLoanAmount(),
-                entity.getInterestRate(),
-                entity.getTermInMonths(),
-                entity.getStatus(),
-                entity.getCreatedAt()
+                Money.of(entity.getLoanAmount()),
+                InterestRate.of(entity.getInterestRate()),
+                NumberOfInstallment.of(entity.getNumberOfInstallment())
         );
     }
 }
