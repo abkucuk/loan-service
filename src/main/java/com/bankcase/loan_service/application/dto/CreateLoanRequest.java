@@ -5,5 +5,6 @@ import java.math.BigDecimal;
 public record CreateLoanRequest(
         Long customerId,
         BigDecimal amount,
-        BigDecimal interestRate
+        BigDecimal interestRate,
+        Integer installments
 ) {}
