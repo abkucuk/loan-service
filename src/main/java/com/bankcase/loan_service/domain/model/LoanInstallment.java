@@ -84,6 +84,17 @@ public class LoanInstallment {
                 .build();
     }
 
+    public static LoanInstallment toDomain(LoanInstallmentEntity entity){
+        return new LoanInstallment(
+                entity.getId(),
+                entity.getLoanEntity().getId(),
+                Money.of(entity.getAmount()),
+                entity.getDueDate(),
+                entity.getPaymentDate(),
+                entity.isPaid()
+        );
+    }
+
     public static LoanInstallment restore(
             Long id,
             Long loanId,

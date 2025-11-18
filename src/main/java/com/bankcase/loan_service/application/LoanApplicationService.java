@@ -2,11 +2,9 @@ package com.bankcase.loan_service.application;
 
 import com.bankcase.loan_service.application.dto.CreateLoanRequest;
 import com.bankcase.loan_service.application.port.CustomerCreditCheckPort;
+import com.bankcase.loan_service.application.port.LoanInstallmentRepositoryPort;
 import com.bankcase.loan_service.application.port.LoanRepositoryPort;
-import com.bankcase.loan_service.domain.model.NumberOfInstallment;
-import com.bankcase.loan_service.domain.model.InterestRate;
-import com.bankcase.loan_service.domain.model.Loan;
-import com.bankcase.loan_service.domain.model.Money;
+import com.bankcase.loan_service.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,7 @@ public class LoanApplicationService {
 
     private final LoanRepositoryPort loanRepositoryPort;
     private final CustomerCreditCheckPort customerCreditCheckPort;
+    private final LoanInstallmentRepositoryPort loanInstallmentRepositoryPort;
 
     public Loan createLoan(CreateLoanRequest request) {
 
@@ -74,5 +73,10 @@ public class LoanApplicationService {
     public ResponseEntity<List<Loan>> findByCustomerId(Long customerId) {
         List<Loan> loans = loanRepositoryPort.findByCustomerId(customerId);
         return ResponseEntity.ok(loans);
+    }
+
+    public ResponseEntity<List<LoanInstallment>> findByInstallmentsByLoanId(Long loanId) {
+        List<LoanInstallment> installmentList = loanInstallmentRepositoryPort.findByInstallmentsByLoanId(loanId);
+        return ResponseEntity.ok(installmentList);
     }
 }
