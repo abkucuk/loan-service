@@ -41,4 +41,6 @@ public class LoanController {
     public ResponseEntity<List<Loan>> findByCustomerId(@PathVariable Long customerId) {
         return service.findByCustomerId(customerId);
     }
+
+
 }

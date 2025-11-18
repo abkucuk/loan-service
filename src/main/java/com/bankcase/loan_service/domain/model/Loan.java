@@ -121,6 +121,19 @@ public class Loan {
         return nextMonth.withDayOfMonth(1);
     }
 
+    public static Loan restore(Long id, Long customerId, Money amount, InterestRate interestRate, NumberOfInstallment numberOfInstallment, LoanStatus status, LocalDateTime createdAt, List<LoanInstallment> installments) {
+        return new Loan(
+                id,
+                customerId,
+                amount,
+                interestRate,
+                numberOfInstallment,
+                status,
+                createdAt,
+                installments
+        );
+    }
+
     public void approve() {
         if (this.status != LoanStatus.PENDING) {
             throw new IllegalStateException("Only PENDING loans can be approved.");

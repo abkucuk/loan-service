@@ -26,12 +26,12 @@ public class JpaLoanRepositoryAdapter implements LoanRepositoryPort {
         LoanEntity entity = mapper.toEntity(loan);
         LoanEntity saved = repository.save(entity);
 
-        return toDomain(saved);
+        return mapper.toDomain(saved);
     }
 
     @Override
     public Optional<Loan> findById(Long id) {
-        return repository.findById(id).map(this::toDomain);
+        return repository.findById(id).map(mapper::toDomain);
     }
 
     @Override
@@ -39,17 +39,7 @@ public class JpaLoanRepositoryAdapter implements LoanRepositoryPort {
         return repository.findByCustomerId(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("Customer has no loan"))
                 .stream()
-                .map(this::toDomain)
+                .map(mapper::toDomain)
                 .toList();
-    }
-
-    private Loan toDomain(LoanEntity entity) {
-        return Loan.create(
-                entity.getId(),
-                entity.getCustomerId(),
-                Money.of(entity.getLoanAmount()),
-                InterestRate.of(entity.getInterestRate()),
-                NumberOfInstallment.of(entity.getNumberOfInstallment())
-        );
     }
 }

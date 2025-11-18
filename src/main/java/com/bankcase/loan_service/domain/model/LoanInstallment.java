@@ -83,4 +83,22 @@ public class LoanInstallment {
                 .isPaid(this.isPaid())
                 .build();
     }
+
+    public static LoanInstallment restore(
+            Long id,
+            Long loanId,
+            Money amount,
+            LocalDate dueDate,
+            LocalDate paymentDate,
+            boolean paid
+    ) {
+        return new LoanInstallment(
+                id,
+                loanId,
+                amount,
+                dueDate,
+                paymentDate,
+                paid
+        );
+    }
 }
