@@ -1,4 +1,4 @@
-package com.bankcase.loan_service.application.dto;
+package com.bankcase.loan_service.application.port.in;
 
 import java.math.BigDecimal;
 

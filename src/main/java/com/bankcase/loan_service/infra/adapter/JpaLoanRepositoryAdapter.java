@@ -1,10 +1,7 @@
 package com.bankcase.loan_service.infra.adapter;
 
-import com.bankcase.loan_service.application.port.LoanRepositoryPort;
-import com.bankcase.loan_service.domain.model.InterestRate;
+import com.bankcase.loan_service.application.port.out.LoanRepositoryPort;
 import com.bankcase.loan_service.domain.model.Loan;
-import com.bankcase.loan_service.domain.model.Money;
-import com.bankcase.loan_service.domain.model.NumberOfInstallment;
 import com.bankcase.loan_service.infra.mapper.LoanEntityMapper;
 import com.bankcase.loan_service.infra.repository.LoanEntity;
 import com.bankcase.loan_service.infra.repository.LoanJpaRepository;

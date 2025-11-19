@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LoanInstallmentJpaRepository extends JpaRepository<LoanInstallmentEntity, Long> {
-    @Query("SELECT i FROM LoanInstallmentEntity i WHERE i.loanEntity.id = ?1")
-    Optional<List<LoanInstallmentEntity>> findByLoanId(Long loanId);
+    @Query("SELECT i FROM LoanInstallmentEntity i WHERE i.loanEntity.id = ?1 ORDER BY i.dueDate ASC")
+    Optional<List<LoanInstallmentEntity>> findByLoanIdOrderByDueDateAsc(Long loanId);
 }

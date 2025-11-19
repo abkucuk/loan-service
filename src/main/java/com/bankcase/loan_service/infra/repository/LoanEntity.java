@@ -34,6 +34,8 @@ public class LoanEntity {
 
     private LocalDateTime createdAt;
 
+    private boolean isPaid;
+
     @OneToMany(
             mappedBy = "loanEntity",
             cascade = CascadeType.ALL,
@@ -47,7 +49,8 @@ public class LoanEntity {
                       BigDecimal interestRate,
                       Integer numberOfInstallment,
                       LoanStatus status,
-                      LocalDateTime createdAt) {
+                      LocalDateTime createdAt,
+                      boolean isPaid) {
 
         this.customerId = customerId;
         this.loanAmount = loanAmount;
@@ -55,6 +58,7 @@ public class LoanEntity {
         this.numberOfInstallment = numberOfInstallment;
         this.status = status;
         this.createdAt = createdAt;
+        this.isPaid = isPaid;
     }
 
     public void addInstallment(LoanInstallmentEntity installment){

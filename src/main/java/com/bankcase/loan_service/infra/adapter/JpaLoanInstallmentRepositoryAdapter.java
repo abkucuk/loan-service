@@ -1,6 +1,6 @@
 package com.bankcase.loan_service.infra.adapter;
 
-import com.bankcase.loan_service.application.port.LoanInstallmentRepositoryPort;
+import com.bankcase.loan_service.application.port.out.LoanInstallmentRepositoryPort;
 import com.bankcase.loan_service.domain.model.LoanInstallment;
 import com.bankcase.loan_service.infra.repository.LoanInstallmentJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class JpaLoanInstallmentRepositoryAdapter implements LoanInstallmentRepos
 
     @Override
     public List<LoanInstallment> findByInstallmentsByLoanId(Long loanId) {
-        return loanInstallmentJpaRepository.findByLoanId(loanId)
+        return loanInstallmentJpaRepository.findByLoanIdOrderByDueDateAsc(loanId)
                 .orElseThrow(() -> new IllegalArgumentException("Loan has no installments"))
                 .stream().map(LoanInstallment::toDomain).toList();
     }

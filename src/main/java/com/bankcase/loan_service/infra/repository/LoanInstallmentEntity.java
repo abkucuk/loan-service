@@ -31,6 +31,9 @@ public class LoanInstallmentEntity {
     @Column(name = "amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
+    @Column(name = "paid_amount", precision = 19, scale = 2)
+    private BigDecimal paidAmount;
+
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 

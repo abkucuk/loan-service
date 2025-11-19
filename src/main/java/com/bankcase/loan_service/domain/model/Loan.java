@@ -23,10 +23,9 @@ public class Loan {
     private NumberOfInstallment numberOfInstallment;
     private LoanStatus status;
     private LocalDateTime createdAt;
+    private boolean isPaid;
     private List<LoanInstallment> installments;
 
-
-    private static final List<Integer> VALID_INSTALLMENTS = List.of(6,9,12,24);
 
     private Loan(
             Long id,
@@ -36,6 +35,7 @@ public class Loan {
             NumberOfInstallment numberOfInstallment,
             LoanStatus status,
             LocalDateTime createdAt,
+            boolean isPaid,
             List<LoanInstallment> installments
     ) {
         this.id = id;
@@ -45,6 +45,7 @@ public class Loan {
         this.numberOfInstallment = numberOfInstallment;
         this.status = status;
         this.createdAt = createdAt;
+        this.isPaid = isPaid;
         this.installments = installments;
     }
 
@@ -92,6 +93,7 @@ public class Loan {
                 numberOfInstallment,
                 LoanStatus.APPROVED,
                 LocalDateTime.now(),
+                false,
                 installments
         );
     }
@@ -121,7 +123,27 @@ public class Loan {
         return nextMonth.withDayOfMonth(1);
     }
 
-    public static Loan restore(Long id, Long customerId, Money amount, InterestRate interestRate, NumberOfInstallment numberOfInstallment, LoanStatus status, LocalDateTime createdAt, List<LoanInstallment> installments) {
+    public List<LoanInstallment> payInstallment(Money amount) {
+        List<LoanInstallment> paidInstallments = new ArrayList<>();
+        for (LoanInstallment installment : installments) {
+            Boolean isPaid = installment.pay(amount, LocalDate.now());
+            if (isPaid) {
+                amount = amount.subtract(installment.getPaidAmount());
+                paidInstallments.add(installment);
+            }
+        }
+        checkIfAllInstallmentsPaid();
+        return paidInstallments;
+    }
+
+    private void checkIfAllInstallmentsPaid() {
+        boolean allPaid = installments.stream().allMatch(LoanInstallment::isPaid);
+        if (allPaid) {
+            this.isPaid = Boolean.TRUE;
+        }
+    }
+
+    public static Loan restore(Long id, Long customerId, Money amount, InterestRate interestRate, NumberOfInstallment numberOfInstallment, LoanStatus status, LocalDateTime createdAt, List<LoanInstallment> installments, boolean isPaid) {
         return new Loan(
                 id,
                 customerId,
@@ -130,6 +152,7 @@ public class Loan {
                 numberOfInstallment,
                 status,
                 createdAt,
+                isPaid,
                 installments
         );
     }

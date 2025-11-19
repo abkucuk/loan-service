@@ -18,7 +18,8 @@ public class LoanEntityMapper {
                 loan.getInterestRate().getValue(),
                 loan.getNumberOfInstallment().getValue(),
                 loan.getStatus(),
-                loan.getCreatedAt()
+                loan.getCreatedAt(),
+                loan.isPaid()
         );
 
         loan.getInstallments().forEach(inst -> {
@@ -54,7 +55,8 @@ public class LoanEntityMapper {
                 NumberOfInstallment.of(entity.getNumberOfInstallment()),
                 entity.getStatus(),
                 entity.getCreatedAt(),
-                installments
+                installments,
+                entity.isPaid()
         );
     }
 }

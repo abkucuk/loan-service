@@ -1,6 +1,6 @@
 package com.bankcase.loan_service.infra.adapter;
 
-import com.bankcase.loan_service.application.port.CustomerCreditCheckPort;
+import com.bankcase.loan_service.application.port.out.CustomerCreditCheckPort;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.ResponseEntity;
