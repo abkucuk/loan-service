@@ -14,7 +14,7 @@ public class Money {
         if (value == null) {
             throw new IllegalArgumentException("Money value cannot be null.");
         }
-        if (value.compareTo(BigDecimal.ZERO) <= 0) {
+        if (value.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Money value must be positive.");
         }
 
@@ -23,6 +23,10 @@ public class Money {
 
     public static Money of(BigDecimal amount) {
         return new Money(amount);
+    }
+
+    public static Money zero() {
+        return new Money(BigDecimal.ZERO);
     }
 
 
