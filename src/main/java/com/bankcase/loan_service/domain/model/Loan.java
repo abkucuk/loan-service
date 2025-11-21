@@ -107,6 +107,7 @@ public class Loan {
                             null,
                             null,
                             Money.of(installmentAmount),
+                            Money.zero(),
                             nextDueDate
                     )
             );
