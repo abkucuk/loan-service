@@ -13,6 +13,7 @@ public class LoanEntityMapper {
 
     public LoanEntity toEntity (Loan loan){
         LoanEntity entity =  new LoanEntity(
+                loan.getId(),
                 loan.getCustomerId(),
                 loan.getAmount().getValue(),
                 loan.getInterestRate().getValue(),
@@ -39,6 +40,7 @@ public class LoanEntityMapper {
                                 inst.getId(),
                                 inst.getLoanEntity().getId(),
                                 Money.of(inst.getAmount()),
+                                Money.of(inst.getPaidAmount()),
                                 inst.getDueDate(),
                                 inst.getPaymentDate(),
                                 inst.isPaid()
