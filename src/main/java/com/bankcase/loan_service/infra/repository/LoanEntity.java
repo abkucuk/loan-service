@@ -44,7 +44,8 @@ public class LoanEntity {
     )
     private List<LoanInstallmentEntity> installmentList;
 
-    public LoanEntity(Long customerId,
+    public LoanEntity(Long loanId,
+            Long customerId,
                       BigDecimal loanAmount,
                       BigDecimal interestRate,
                       Integer numberOfInstallment,
@@ -52,6 +53,7 @@ public class LoanEntity {
                       LocalDateTime createdAt,
                       boolean isPaid) {
 
+        this.id = loanId;
         this.customerId = customerId;
         this.loanAmount = loanAmount;
         this.interestRate = interestRate;
