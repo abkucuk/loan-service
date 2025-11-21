@@ -25,6 +25,7 @@ public class LoanInstallment {
             Long id,
             Long loanId,
             Money amount,
+            Money paidAmount,
             LocalDate dueDate,
             LocalDate paymentDate,
             boolean paid
@@ -32,16 +33,18 @@ public class LoanInstallment {
         this.id = id;
         this.loanId = loanId;
         this.amount = amount;
+        this.paidAmount = paidAmount;
         this.dueDate = dueDate;
         this.paymentDate = paymentDate;
         this.paid = paid;
     }
 
-    public static LoanInstallment create(Long id, Long loanId, Money amount, LocalDate dueDate) {
+    public static LoanInstallment create(Long id, Long loanId, Money amount, Money paidAmount, LocalDate dueDate) {
         return new LoanInstallment(
                 id,
                 loanId,
                 amount,
+                paidAmount,
                 dueDate,
                 null,
                 false
@@ -111,6 +114,7 @@ public class LoanInstallment {
                 entity.getId(),
                 entity.getLoanEntity().getId(),
                 Money.of(entity.getAmount()),
+                Money.of(entity.getPaidAmount()),
                 entity.getDueDate(),
                 entity.getPaymentDate(),
                 entity.isPaid()
@@ -121,6 +125,7 @@ public class LoanInstallment {
             Long id,
             Long loanId,
             Money amount,
+            Money paidAmount,
             LocalDate dueDate,
             LocalDate paymentDate,
             boolean paid
@@ -129,6 +134,7 @@ public class LoanInstallment {
                 id,
                 loanId,
                 amount,
+                paidAmount,
                 dueDate,
                 paymentDate,
                 paid
